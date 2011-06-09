@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "niceogiri/version"
 
 Gem::Specification.new do |s|
-  s.name        = "Niceogiri"
+  s.name        = "niceogiri"
   s.version     = Niceogiri::VERSION
   s.authors     = ["Ben Langfeld", "Jeff Smick"]
   s.email       = ["ben@langfeld.me", "sprsquish@gmail.com"]
