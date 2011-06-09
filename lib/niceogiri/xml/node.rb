@@ -13,7 +13,7 @@ module Niceogiri
       def self.new(name = nil, doc = nil, ns = nil)
         super(name.to_s, (doc || Nokogiri::XML::Document.new)).tap do |node|
           node.document.root = node unless doc
-          node.namespace = self.ns if ns
+          node.namespace = ns if ns
         end
       end
 
