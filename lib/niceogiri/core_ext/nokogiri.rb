@@ -16,7 +16,12 @@ module Nokogiri
       # @param [#to_s, nil] value the new value or nil to remove it
       def []=(name, value)
         name = name.to_s
-        value.nil? ? remove_attribute(name) : attr_set(name, value.to_s)
+        if value.nil?
+          remove_attribute name
+        else
+          value = value.is_a?(Array) ? value.join : value
+          attr_set name, value.to_s
+        end
       end
 
       alias_method :nokogiri_xpath, :xpath

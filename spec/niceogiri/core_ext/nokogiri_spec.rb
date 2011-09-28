@@ -30,6 +30,15 @@ describe 'Nokogiri::XML::Node' do
     attrs[:foo] = 1
     attrs[:foo].must_equal '1'
 
+    attrs[:some_attr] = :bah
+    attrs[:some_attr].must_equal 'bah'
+  end
+
+  it 'joins an array into a string when passed to the attribute setter' do
+    attrs = Nokogiri::XML::Node.new('foo', @doc)
+    attrs[:foo] = 1
+    attrs[:foo].must_equal '1'
+
     attrs[:some_attr] = [:bah, :boo]
     attrs[:some_attr].must_equal 'bahboo'
   end
