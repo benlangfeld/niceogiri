@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Nokogiri::XML::Node' do
+describe Nokogiri::XML::Node do
   let(:doc) { Nokogiri::XML::Document.new }
 
   it 'aliases #name to #element_name' do

@@ -5,15 +5,16 @@ module Niceogiri
     describe Node do
       let(:doc) { Nokogiri::XML::Document.new }
 
+      let(:node_name) { 'foo' }
+      subject { Node.new node_name }
+
       it 'generates a new node automatically setting the document' do
-        n = Node.new 'foo'
-        n.element_name.should == 'foo'
-        n.document.should_not == doc
+        subject.element_name.should == 'foo'
+        subject.document.should_not == doc
       end
 
       it 'sets the new document root to the node' do
-        n = Node.new 'foo'
-        n.document.root.should == n
+        subject.document.root.should == subject
       end
 
       it 'does not set the document root if the document is provided' do
@@ -28,48 +29,45 @@ module Niceogiri
       end
 
       it 'provides an attribute reader' do
-        foo = Node.new
-        foo.read_attr(:bar).should be_nil
-        foo[:bar] = 'baz'
-        foo.read_attr(:bar).should == 'baz'
+        subject.read_attr(:bar).should be_nil
+        subject[:bar] = 'baz'
+        subject.read_attr(:bar).should == 'baz'
       end
 
-      it 'provides an attribute reader with converstion' do
-        foo = Node.new
-        foo.read_attr(:bar, :to_sym).should be_nil
-        foo[:bar] = 'baz'
-        foo.read_attr(:bar, :to_sym).should == :baz
+      it 'provides an attribute reader with conversion' do
+        subject.read_attr(:bar, :to_sym).should be_nil
+        subject[:bar] = 'baz'
+        subject.read_attr(:bar, :to_sym).should == :baz
       end
 
       it 'provides an attribute writer' do
-        foo = Node.new
-        foo[:bar].should be_nil
-        foo.write_attr(:bar, 'baz')
-        foo[:bar].should == 'baz'
+        subject[:bar].should be_nil
+        subject.write_attr :bar, 'baz'
+        subject[:bar].should == 'baz'
       end
 
       it 'provides a content reader' do
-        foo = Node.new('foo')
+        foo = Node.new 'foo'
         foo << (bar = Node.new('bar', foo.document))
         bar.content = 'baz'
         foo.read_content(:bar).should == 'baz'
       end
 
       it 'provides a content reader that converts the value' do
-        foo = Node.new('foo')
+        foo = Node.new 'foo'
         foo << (bar = Node.new('bar', foo.document))
         bar.content = 'baz'
         foo.read_content(:bar, :to_sym).should == :baz
       end
 
       it 'provides a content writer' do
-        foo = Node.new('foo')
+        foo = Node.new 'foo'
         foo.set_content_for :bar, 'baz'
         foo.content_from(:bar).should == 'baz'
       end
 
       it 'provides a content writer that removes a child when set to nil' do
-        foo = Node.new('foo')
+        foo = Node.new 'foo'
         foo << (bar = Node.new('bar', foo.document))
         bar.content = 'baz'
         foo.content_from(:bar).should == 'baz'
@@ -81,7 +79,7 @@ module Niceogiri
       end
 
       it 'provides "attr_accessor" for namespace' do
-        n = Node.new('foo')
+        n = Node.new 'foo'
         n.namespace.should be_nil
 
         n.namespace = 'foo:bar'
@@ -157,19 +155,18 @@ module Niceogiri
       end
 
       it 'has a content_from helper that pulls the content from a child node' do
-        f = Node.new('foo')
+        f = Node.new 'foo'
         f << (b = Node.new('bar'))
         b.content = 'content'
         f.content_from(:bar).should == 'content'
       end
 
       it 'returns nil when sent #content_from and a missing node' do
-        f = Node.new('foo')
-        f.content_from(:bar).should be_nil
+        Node.new('foo').content_from(:bar).should be_nil
       end
 
       it 'creates a new node and sets content when sent #set_content_for' do
-        f = Node.new('foo')
+        f = Node.new 'foo'
         f.should respond_to :set_content_for
         f.xpath('bar').should be_empty
         f.set_content_for :bar, :baz
@@ -178,7 +175,7 @@ module Niceogiri
       end
 
       it 'removes a child node when sent #set_content_for with nil' do
-        f = Node.new('foo')
+        f = Node.new 'foo'
         f << (b = Node.new('bar'))
         f.should respond_to :set_content_for
         f.xpath('bar').should_not be_empty
@@ -187,7 +184,7 @@ module Niceogiri
       end
 
       it 'will change the content of an existing node when sent #set_content_for' do
-        f = Node.new('foo')
+        f = Node.new 'foo'
         f << (b = Node.new('bar'))
         b.content = 'baz'
         f.should respond_to :set_content_for
