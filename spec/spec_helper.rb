@@ -1,6 +1,11 @@
-$:.unshift File.join(File.dirname(__FILE__), "..", "lib")
+%w{
+  rspec
+  niceogiri
+}.each { |lib| require lib }
 
-require 'niceogiri'
-require 'minitest/spec'
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
-MiniTest::Unit.autorun
+RSpec.configure do |config|
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
+end

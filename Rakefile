@@ -1,21 +1,14 @@
 require 'rubygems'
+require 'bundler/setup'
 require 'rake'
 
 require 'bundler/gem_tasks'
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'spec'
-  test.pattern = 'spec/**/*_spec.rb'
-  test.verbose = true
-end
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'spec'
-  test.pattern = 'spec/**/*_spec.rb'
-  test.rcov_opts += ['--exclude \/Library\/Ruby,spec\/', '--xrefs']
-  test.verbose = true
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
 require 'yard'
@@ -24,4 +17,4 @@ YARD::Rake::YardocTask.new(:doc) do |t|
   t.options = ['--no-private', '-m', 'markdown', '-o', './doc/public/yard']
 end
 
-task :default => :test
+task :default => :spec
