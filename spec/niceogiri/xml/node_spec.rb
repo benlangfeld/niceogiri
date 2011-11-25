@@ -145,6 +145,12 @@ module Niceogiri
         n2.to_s.should == n.to_s
       end
 
+      it 'holds on to namespaces when inheriting attributes' do
+        n = Nokogiri::XML.parse('<foo xml:bar="http://bar.com"/>').root
+        n2 = Node.new('foo').inherit n
+        n2.to_s.should == n.to_s
+      end
+
       it 'provides a mechanism to inherit attrs' do
         n = Node.new 'foo'
         n2 = Node.new 'foo'

@@ -147,7 +147,10 @@ module Niceogiri
       # @param [Hash] attrs a hash of attributes to set on the node
       # @return [self]
       def inherit_attrs(attrs)
-        attrs.each { |name, value| self[name] = value }
+        attrs.each do |name, value|
+          attr_name = value.namespace ? [value.namespace.prefix, name].join(':') : name
+          self.write_attr attr_name, value
+        end
         self
       end
 
