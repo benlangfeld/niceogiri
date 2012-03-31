@@ -134,11 +134,7 @@ module Niceogiri
       def inherit(node)
         set_namespace node.namespace if node.namespace
         inherit_attrs node.attributes
-        node.children.each do |c|
-          self << (n = c.dup)
-          ns = n.namespace_definitions.find { |ns| ns.prefix == c.namespace.prefix }
-          n.namespace = ns if ns
-        end
+        node.children.each { |c| self << c.dup }
         self
       end
 
