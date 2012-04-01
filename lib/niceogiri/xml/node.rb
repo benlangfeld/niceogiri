@@ -132,7 +132,7 @@ module Niceogiri
       # @param [XML::Node] node the node to inherit
       # @return [self]
       def inherit(node)
-        set_namespace node.namespace if node.namespace
+        nokogiri_namespace = node.namespace
         inherit_attrs node.attributes
         node.children.each { |c| self << c.dup }
         self
