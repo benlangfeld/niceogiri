@@ -5,6 +5,8 @@ describe Nokogiri::XML::Node do
 
   subject { Nokogiri::XML::Node.new 'foo', doc }
 
+  before { doc.root = subject }
+
   it 'aliases #name to #element_name' do
     subject.should respond_to :element_name
     subject.element_name.should == subject.name
