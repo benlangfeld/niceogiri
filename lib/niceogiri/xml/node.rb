@@ -65,7 +65,8 @@ module Niceogiri
         when Nokogiri::XML::Namespace
           self.nokogiri_namespace = namespaces
         when String
-          self.add_namespace nil, namespaces
+          ns = self.add_namespace nil, namespaces
+          self.nokogiri_namespace = ns
         when Hash
           self.add_namespace nil, ns if ns = namespaces.delete(nil)
           namespaces.each do |p, n|

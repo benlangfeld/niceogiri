@@ -79,4 +79,52 @@ describe Nokogiri::XML::Node do
     doc.root = subject
     subject.find_first('/foo').should == subject.find('/foo').first
   end
+
+  describe "JRuby bugs" do
+    describe '#to_xml' do
+      context 'with a namespace on a child node' do
+        let(:ns_href) { 'foo' }
+        let(:child_node) { Nokogiri::XML::Node.new 'bar', doc }
+
+        before do
+          child_node.add_namespace nil, ns_href
+          subject << child_node
+        end
+
+        it 'should have the correct namespace in the rendered XML' do
+          p subject.to_xml
+          subject.to_xml.should match(/xmlns="foo"/)
+        end
+      end
+    end
+
+    describe '#xpath' do
+      context 'looking for a namespaced element inside a prefixed element' do
+        let(:child_node) { Nokogiri::XML::Node.new 'bar', doc }
+
+        let(:outer_ns_prefix) { 'pref' }
+        let(:outer_ns_href)   { 'outer_ns' }
+        let(:inner_ns_href)   { 'inner_ns' }
+
+        before do
+          ns = subject.add_namespace outer_ns_prefix, outer_ns_href
+          subject.namespace = ns
+          child_node.add_namespace nil, inner_ns_href
+          subject << child_node
+        end
+
+        it 'should have the correct namespace' do
+          ns = subject.children.first.namespace
+          ns.should be_a Nokogiri::XML::Namespace
+          ns.prefix.should be == nil
+          ns.href.should be == inner_ns_href
+        end
+
+        it 'should find the element' do
+          x = subject.xpath("//inner_ns:bar", 'inner_ns' => inner_ns_href)
+          x.first.should be child_node
+        end
+      end
+    end
+  end
 end
