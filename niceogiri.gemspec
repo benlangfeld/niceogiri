@@ -19,11 +19,11 @@ Gem::Specification.new do |s|
   s.rdoc_options = %w{--charset=UTF-8}
   s.extra_rdoc_files = %w{LICENSE README.md}
 
-  s.add_dependency "nokogiri", ["~> 1.4"]
+  s.add_dependency "nokogiri", ["~> 1.5"]
 
-  s.add_development_dependency "rspec", [">= 2.7.0"]
-  s.add_development_dependency "bundler", [">= 1.0.0"]
-  s.add_development_dependency "yard", [">= 0.6.1"]
+  s.add_development_dependency "rspec", ["~> 2.7"]
+  s.add_development_dependency "bundler", ["~> 1.0"]
+  s.add_development_dependency "yard", ["~> 0.6"]
   s.add_development_dependency "rake"
   s.add_development_dependency "guard-rspec"
 end
