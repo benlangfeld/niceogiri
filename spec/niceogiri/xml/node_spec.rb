@@ -146,9 +146,12 @@ module Niceogiri
       end
 
       it 'holds on to namespaces when inheriting content' do
-        n = Nokogiri::XML.parse('<message xmlns="foobar"/>').root
+        n = Nokogiri::XML.parse('<message xmlns="foobar"><body xmlns="barfoo"/></message>').root
         n2 = Node.new('message').inherit n
         n2.to_s.should == n.to_s
+        n2.namespace.href.should be == 'foobar'
+        body = n2.children.first
+        body.namespace.href.should be == 'barfoo'
       end
 
       it 'holds on to namespaces without a prefix when inheriting content' do
