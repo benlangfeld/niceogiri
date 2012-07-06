@@ -137,7 +137,7 @@ module Niceogiri
         inherit_attrs node.attributes
         node.children.each do |c|
           self << (n = c.dup)
-          if c.namespace
+          if c.respond_to?(:namespace) && c.namespace
             ns = n.add_namespace c.namespace.prefix, c.namespace.href
             n.namespace = ns
           end
