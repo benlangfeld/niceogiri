@@ -32,8 +32,8 @@ module Niceogiri
       #
       # @param [#to_sym] attr_name the name of the attribute
       # @param [#to_s] value the value to set the attribute to
-      def write_attr(attr_name, value)
-        self[attr_name.to_sym] = value
+      def write_attr(attr_name, value, to_call = nil)
+        self[attr_name.to_sym] = value && to_call ? value.__send__(to_call) : value
       end
 
       # Helper method to read the content of a node
