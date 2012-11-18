@@ -133,16 +133,17 @@ module Niceogiri
       # @param [XML::Node] node the node to inherit
       # @return [self]
       def inherit(node)
-        self.namespace = node.namespace.href if node.namespace
+        inherit_namespaces node
         inherit_attrs node.attributes
-        node.children.each do |c|
-          self << (n = c.dup)
-          if c.respond_to?(:namespace) && c.namespace
-            ns = n.add_namespace c.namespace.prefix, c.namespace.href
-            n.namespace = ns
-          end
-        end
+        inherit_children node
         self
+      end
+
+      def inherit_namespaces(node)
+        node.namespace_definitions.each do |ns|
+          add_namespace ns.prefix, ns.href
+        end
+        self.namespace = node.namespace.href if node.namespace
       end
 
       # Inherit a set of attributes
@@ -155,6 +156,16 @@ module Niceogiri
           self.write_attr attr_name, value
         end
         self
+      end
+
+      def inherit_children(node)
+        node.children.each do |c|
+          self << (n = c.dup)
+          if c.respond_to?(:namespace) && c.namespace
+            ns = n.add_namespace c.namespace.prefix, c.namespace.href
+            n.namespace = ns
+          end
+        end
       end
 
       # The node as XML
