@@ -152,7 +152,7 @@ module Niceogiri
       # @return [self]
       def inherit_attrs(attrs)
         attrs.each do |name, value|
-          attr_name = value.namespace ? [value.namespace.prefix, name].join(':') : name
+          attr_name = value.namespace && value.namespace.prefix ? [value.namespace.prefix, name].join(':') : name
           self.write_attr attr_name, value
         end
         self
