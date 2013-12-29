@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/benlangfeld/Niceogiri"
   s.summary     = %q{Some additional niceties atop Nokogiri}
   s.description = %q{Make dealing with XML less painful}
+  s.license     = 'MIT'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
